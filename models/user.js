@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import {createHmac} from 'crypto'
 
 const userSchema = new mongoose.Schema({
-    username:{
+    name:{
         type: String,
         required: true,
         trim:true,
@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema({
     },
     salt: {
         type: String
+    },
+    status: {
+        type: Number,
+        default: 0
     },
     role: {
         type: Number,

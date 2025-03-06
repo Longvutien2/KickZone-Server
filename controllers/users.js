@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 
 
 export const signUp = async (req, res) => {
-    const {email, username, password} = req.body
+    const {email, name, password} = req.body
     try {
         const exisUser = await User.findOne({email}).exec();
         if (exisUser) {
@@ -11,12 +11,12 @@ export const signUp = async (req, res) => {
                 message:"User đã tồn tại"
             })
         }
-        const user = await User({email, password, username}).save()
+        const user = await User({email, password, name}).save()
         res.json({
             user:{
                 _id:user._id,
                 email: user.email,
-                username: user.username
+                username: user.name
             }
     })
     } catch (error) {
@@ -29,7 +29,7 @@ export const signIn = async (req, res) => {
     try {
         const user = await User.findOne({email}).exec();
         if (!user) {
-            return res.json({
+            return res.status(400).json({
                 message:"User không tồn tại"
             })
         }
@@ -45,7 +45,7 @@ export const signIn = async (req, res) => {
             user:{
                 _id:user._id,
                 email:user.email,
-                username: user.username
+                name: user.name
             }
         })
     } catch (error) {

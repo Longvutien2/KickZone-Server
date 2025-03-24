@@ -6,6 +6,8 @@ import fieldRoutes from "./routes/fields.js"; // Import model Product
 import cors from 'cors';
 import timeSlotRouter from "./routes/timeSlot.js";
 import footballField from "./routes/footballField.js";
+import bookingRouter from "./routes/booking.js";
+import notificationRouter from "./routes/notification.js";
 
 const app = express();
 app.use(cors());
@@ -16,6 +18,8 @@ app.use("/api", userRouter);
 app.use("/api/fields", fieldRoutes);
 app.use("/api/timeSlot", timeSlotRouter);
 app.use("/api/footballField", footballField);
+app.use("/api/booking", bookingRouter);
+app.use("/api/notification", notificationRouter);
 
 
 

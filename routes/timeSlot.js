@@ -26,8 +26,17 @@ timeSlotRouter.patch("/:id", async (req, res) => {
 // list timeslot for field
 timeSlotRouter.get("/", async (req, res) => {
     try {
-        const slots = await TimeSlot.find();
-        res.status(200).json(slots);
+        const slots = await TimeSlot.find().populate("fieldId");
+        res.status(200).json(slots);  
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+timeSlotRouter.get("/:id", async (req, res) => {
+    try {
+        const slots = await TimeSlot.findOne({_id: req.params.id}).populate("fieldId");
+        res.status(200).json(slots);  
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

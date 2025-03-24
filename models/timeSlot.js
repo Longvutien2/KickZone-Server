@@ -5,6 +5,7 @@ const timeSlotSchema = new mongoose.Schema({
     time: { type: String, required: true },
     price: { type: String, required: true },
     isBooked: { type: Boolean, default: false },
+    datetime: { type: String },
     fieldId: {
         type: ObjectId,
         ref: "Field"

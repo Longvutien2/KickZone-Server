@@ -8,6 +8,8 @@ import timeSlotRouter from "./routes/timeSlot.js";
 import footballField from "./routes/footballField.js";
 import bookingRouter from "./routes/booking.js";
 import notificationRouter from "./routes/notification.js";
+import teamRouter from "./routes/team.js";
+import matchRouter from "./routes/match.js";
 
 const app = express();
 app.use(cors());
@@ -20,6 +22,8 @@ app.use("/api/timeSlot", timeSlotRouter);
 app.use("/api/footballField", footballField);
 app.use("/api/booking", bookingRouter);
 app.use("/api/notification", notificationRouter);
+app.use("/api/team", teamRouter);
+app.use("/api/match", matchRouter);
 
 
 
@@ -28,8 +32,8 @@ mongoose.connect("mongodb+srv://longvutien:giongid@cluster0.e5gby.mongodb.net/?r
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-.then(() => console.log("✅ Kết nối MongoDB thành công!"))
-.catch(err => console.error("❌ Lỗi kết nối MongoDB:", err));
+  .then(() => console.log("✅ Kết nối MongoDB thành công!"))
+  .catch(err => console.error("❌ Lỗi kết nối MongoDB:", err));
 
 
 // Khởi động server

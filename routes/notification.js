@@ -43,8 +43,6 @@ notificationRouter.get("/detail/:id", async (req, res) => {
 notificationRouter.get("/:userId/:role", async (req, res) => {
     try {
         const { userId, role } = req.params;
-        console.log("req.query", userId, role);
-
         if (!userId || !role) {
             return res.status(400).json({ error: "Missing userId or role" });
         }
@@ -69,10 +67,7 @@ notificationRouter.get("/:userId/:role", async (req, res) => {
             filteredData = data.filter(
                 (item) => item.actor === "user" && String(item.targetUser) === userId
             );
-            console.log("đã vào đây");
-            
         }
-        console.log("filteredData", filteredData);
 
         res.status(200).json(filteredData);
     } catch (error) {

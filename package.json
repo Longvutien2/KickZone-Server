@@ -6,7 +6,7 @@
     "node": "18.x"
   },
   "scripts": {
-    "start": "nodemon app.js --exec babel-node -e js"
+     "start": "node app.js"
   },
   "author": "",
   "license": "ISC",

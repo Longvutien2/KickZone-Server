@@ -37,4 +37,12 @@ mongoose.connect("mongodb+srv://longvutien:giongid@cluster0.e5gby.mongodb.net/?r
 
 
 // Khởi động server
-app.listen(8000, () => console.log("🚀 Server đang chạy tại http://localhost:8000"));
+app.listen(process.env.PORT || 8000, () => {
+
+  console.log("Server is running");
+  return (
+    <h1>
+      Trang chủ
+    </h1>
+  )
+});

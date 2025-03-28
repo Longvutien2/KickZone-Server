@@ -12,7 +12,7 @@ import teamRouter from "./routes/team.js";
 import matchRouter from "./routes/match.js";
 
 const app = express();
-app.use(cors({ origin: '*' }));
+app.use(cors());
 app.use(express.json()); // Để đọc dữ liệu JSON từ request
 
 // router
@@ -37,9 +37,4 @@ mongoose.connect("mongodb+srv://longvutien:giongid@cluster0.e5gby.mongodb.net/?r
 
 
 // Khởi động server
-app.listen(process.env.PORT || 3000, () => {
-  console.log("Server is running");
-  return (
-    <h1>Trang chủ</h1>
-  )
-});
+app.listen(process.env.PORT || 3000, () => console.log("Server is running"));

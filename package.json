@@ -2,6 +2,9 @@
   "name": "server-do-an",
   "version": "1.0.0",
   "main": "app.js",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "start": "node app.js"
   },
@@ -14,9 +17,6 @@
     "express-jwt": "^8.5.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.12.1"
-  },
-  "engines": {
-    "node": "18.x"
   },
   "devDependencies": {
     "@babel/node": "^7.26.0",

@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
-import userRouter from "./routes/auth.js"; // Import model Product
-import fieldRoutes from "./routes/fields.js"; // Import model Product
+import userRouter from "./routes/auth.js";
+import fieldRoutes from "./routes/fields.js";
 
 import cors from 'cors';
 import timeSlotRouter from "./routes/timeSlot.js";
@@ -37,6 +37,5 @@ mongoose.connect("mongodb+srv://longvutien:giongid@cluster0.e5gby.mongodb.net/?r
   .then(() => console.log("✅ Kết nối MongoDB thành công!"))
   .catch(err => console.error("❌ Lỗi kết nối MongoDB:", err));
 
-
 // Khởi động server
-app.listen(8000, () => console.log(`Server is running on port`));
+app.listen(8000, () => console.log(`Server is running on port`)); 

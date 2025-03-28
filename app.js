@@ -12,6 +12,7 @@ import teamRouter from "./routes/team.js";
 import matchRouter from "./routes/match.js";
 import home from "./routes/home.js";
 
+require('dotenv').config();
 const app = express();
 app.use(cors());
 app.use(express.json()); // Để đọc dữ liệu JSON từ request
@@ -38,4 +39,4 @@ mongoose.connect("mongodb+srv://longvutien:giongid@cluster0.e5gby.mongodb.net/?r
 
 
 // Khởi động server
-app.listen(process.env.PORT || 8000, () => console.log("Server is running"));
+app.listen(8000, () => console.log(`Server is running on port`));

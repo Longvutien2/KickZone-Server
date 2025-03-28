@@ -10,6 +10,7 @@ import bookingRouter from "./routes/booking.js";
 import notificationRouter from "./routes/notification.js";
 import teamRouter from "./routes/team.js";
 import matchRouter from "./routes/match.js";
+import home from "./routes/home.js";
 
 const app = express();
 app.use(cors());
@@ -25,7 +26,7 @@ app.use("/api/notification", notificationRouter);
 app.use("/api/team", teamRouter);
 app.use("/api/match", matchRouter);
 
-
+app.use("/home", home);
 
 // Kết nối MongoDB
 mongoose.connect("mongodb+srv://longvutien:giongid@cluster0.e5gby.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {

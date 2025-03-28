@@ -39,4 +39,7 @@ mongoose.connect("mongodb+srv://longvutien:giongid@cluster0.e5gby.mongodb.net/?r
 // Khởi động server
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server is running");
+  return (
+    <h1>Trang chủ</h1>
+  )
 });

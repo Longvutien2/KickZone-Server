@@ -12,7 +12,7 @@ import teamRouter from "./routes/team.js";
 import matchRouter from "./routes/match.js";
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: '*' }));
 app.use(express.json()); // Để đọc dữ liệu JSON từ request
 
 // router

@@ -24,26 +24,35 @@ fieldRoutes.get("/:id", async (req, res) => {
 });
 
 
+// fieldRoutes.get("/footballId/:id", async (req, res) => {
+//   try {
+
+//     const footballFieldId = new mongoose.Types.ObjectId(req.params.id);  // Lấy ID từ request
+
+//     // Sử dụng aggregation để kết hợp cả Field và TimeSlot trong một truy vấn
+//     const populatedFields = await Field.aggregate([
+//       {
+//         $match: { foolballFieldId: footballFieldId }  // Lọc các Field có footballFieldId trùng với ID
+//       },
+//       {
+//         $lookup: {
+//           from: "timeslots",  // Thực hiện join với collection TimeSlot
+//           localField: "_id",   // Dùng _id của Field
+//           foreignField: "fieldId",  // Dùng fieldId trong TimeSlot để join
+//           as: "timeSlots"   // Gán kết quả vào trường "timeSlots"
+//         }
+//       }
+//     ]);
+//     res.status(200).json(populatedFields);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// });
+
 fieldRoutes.get("/footballId/:id", async (req, res) => {
   try {
-
-    const footballFieldId = new mongoose.Types.ObjectId(req.params.id);  // Lấy ID từ request
-
-    // Sử dụng aggregation để kết hợp cả Field và TimeSlot trong một truy vấn
-    const populatedFields = await Field.aggregate([
-      {
-        $match: { foolballFieldId: footballFieldId }  // Lọc các Field có footballFieldId trùng với ID
-      },
-      {
-        $lookup: {
-          from: "timeslots",  // Thực hiện join với collection TimeSlot
-          localField: "_id",   // Dùng _id của Field
-          foreignField: "fieldId",  // Dùng fieldId trong TimeSlot để join
-          as: "timeSlots"   // Gán kết quả vào trường "timeSlots"
-        }
-      }
-    ]);
-    res.status(200).json(populatedFields);
+    const fields = await Field.find({ foolballFieldId: req.params.id }).populate("foolballFieldId");
+    res.status(200).json(fields);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -32,6 +32,16 @@ footballField.get("/:id", async (req, res) => {
   }
 });
 
+footballField.get("/address/field", async (req, res) => {
+  try {
+      const fields = await FootballField.find();
+      const uniqueAddresses = [...new Set(fields.map((item) => item.address))]; // Lọc địa chỉ trùng lặp
+      res.json(uniqueAddresses); 
+  } catch (error) {
+      res.status(500).json({ message: "Lỗi Server", error });
+  }
+});
+
 // 2️ Tạo mới một sân bóng
 footballField.post("/", async (req, res) => {
   try {

@@ -13,6 +13,10 @@ const footballFieldSchema = new mongoose.Schema(
             type: ObjectId,
             ref: "User"
         },
+        // timeSlot: {
+        //     type: ObjectId,
+        //     ref: "TimeSlot"
+        // }
     },
     { timestamps: true }
 );

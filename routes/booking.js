@@ -26,7 +26,25 @@ bookingRouter.patch("/:id", async (req, res) => {
 // Liệt kê tất cả các booking
 bookingRouter.get("/", async (req, res) => {
   try {
-    const bookings = await Booking.find(); // Lấy tất cả các booking
+    const bookings = await Booking.find().sort({ createdAt: -1 });
+    res.status(200).json(bookings); // Trả về danh sách tất cả các booking
+  } catch (error) {
+    res.status(500).json({ message: error.message }); // Nếu có lỗi, trả về thông báo lỗi
+  }
+});
+
+bookingRouter.get("/:id", async (req, res) => {
+  try {
+    const bookings = await Booking.findOne({ _id: req.params.id }); // Lấy tất cả các booking
+    res.status(200).json(bookings); // Trả về danh sách tất cả các booking
+  } catch (error) {
+    res.status(500).json({ message: error.message }); // Nếu có lỗi, trả về thông báo lỗi
+  }
+});
+
+bookingRouter.get("/:footballField/:date", async (req, res) => {
+  try {
+    const bookings = await Booking.find({ footballField: req.params.footballField, date:req.params.date }); // Lấy tất cả các booking
     res.status(200).json(bookings); // Trả về danh sách tất cả các booking
   } catch (error) {
     res.status(500).json({ message: error.message }); // Nếu có lỗi, trả về thông báo lỗi

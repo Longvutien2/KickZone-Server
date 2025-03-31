@@ -10,6 +10,11 @@ const timeSlotSchema = new mongoose.Schema({
         type: ObjectId,
         ref: "Field"
     },
+    footballField: {
+        type: ObjectId,
+        ref: "FootballField"
+    },
+    
 }, { timestamps: true });
 
 

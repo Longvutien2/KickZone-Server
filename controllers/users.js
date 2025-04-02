@@ -71,3 +71,21 @@ export const userById = async (req, res, next, id) => {
         console.log(error);
     }
 }
+
+export const getListUser = async (req, res) => {
+    try {
+        const users = await User.find();
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message }); // Nếu có lỗi, trả về thông báo lỗi
+    }
+}
+
+export const updateUser = async (req, res) => {
+    try {
+        const user = await User.findOneAndUpdate({_id: req.params.id}, req.body, {new: true});
+        res.json(user);
+    } catch (error) {
+        res.status(400).json({message:"Không thể sửa"});
+    }
+}

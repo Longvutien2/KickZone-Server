@@ -18,7 +18,7 @@ const footballFieldSchema = new mongoose.Schema(
             type: ObjectId,
             ref: "User"
         },
-        status: { type: String, enum: ["Hoạt động", "Bảo trì", "Vô hiệu hóa"], default: "Hoạt động" },
+        status: { type: String, enum: ["Hoạt động", "Bảo trì", "Vô hiệu hóa", "Chờ xác nhận"], default: "Chờ xác nhận" },
         // timeSlot: {
         //     type: ObjectId,
         //     ref: "TimeSlot"

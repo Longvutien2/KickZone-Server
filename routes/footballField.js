@@ -23,6 +23,15 @@ footballField.get("/:id/user", async (req, res) => {
   }
 });
 
+footballField.get("/:status/status", async (req, res) => {
+  try {
+    const fields = await FootballField.find({ status: req.params.status }).populate("userId");
+    res.status(200).json(fields);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 footballField.get("/:id", async (req, res) => {
   try {
     const fields = await FootballField.findOne({ _id: req.params.id });

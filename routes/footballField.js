@@ -6,7 +6,7 @@ const footballField = express.Router();
 // 1️ Lấy danh sách tất cả sân bóng
 footballField.get("/", async (req, res) => {
   try {
-    const fields = await FootballField.find();
+    const fields = await FootballField.find().populate("userId");
     res.status(200).json(fields);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -35,7 +35,7 @@ footballField.get("/:id", async (req, res) => {
 footballField.get("/address/field", async (req, res) => {
   try {
       const fields = await FootballField.find();
-      const uniqueAddresses = [...new Set(fields.map((item) => item.address))]; // Lọc địa chỉ trùng lặp
+      const uniqueAddresses = [...new Set(fields.map((item) => item.address.province))]; // Lọc địa chỉ trùng lặp
       res.json(uniqueAddresses); 
   } catch (error) {
       res.status(500).json({ message: "Lỗi Server", error });
@@ -54,14 +54,14 @@ footballField.post("/", async (req, res) => {
 });
 
 // // 3️ Cập nhật lịch đặt sân
-// fieldRoutes.patch("/:id", async (req, res) => {
-//   try {
-//     const updatedField = await Field.findByIdAndUpdate(req.params.id, req.body, { new: true });
-//     res.status(200).json(updatedField);
-//   } catch (error) {
-//     res.status(400).json({ message: error.message });
-//   }
-// });
+footballField.patch("/:id", async (req, res) => {
+  try {
+    const updatedField = await FootballField.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.status(200).json(updatedField);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
 
 // // 4️ Xóa một sân bóng
 // fieldRoutes.delete("/:id", async (req, res) => {

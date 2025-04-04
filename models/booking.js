@@ -14,6 +14,10 @@ const bookingSchema = new mongoose.Schema(
             type: ObjectId,
             ref: "FootballField"
         },
+        user:{
+            type: ObjectId,
+            ref: "User"
+        },
         timeStart: { type: String, required: true },
         price: { type: Number, required: true },
         payment_method: { type: String, required: true },

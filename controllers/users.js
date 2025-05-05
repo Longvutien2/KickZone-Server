@@ -41,12 +41,7 @@ export const signIn = async (req, res) => {
         const token = jwt.sign({ _id: user._id }, "123456", { expiresIn: '1h' })
         res.json({
             token,
-            user: {
-                _id: user._id,
-                email: user.email,
-                name: user.name,
-                role: user.role
-            }
+            user: user
         })
     } catch (error) {
         res.status(400).json({
@@ -83,9 +78,58 @@ export const getListUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     try {
-        const user = await User.findOneAndUpdate({_id: req.params.id}, req.body, {new: true});
-        res.json(user);
+        const user = await User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
+
+        // Tạo token mới giống như khi đăng nhập
+        const token = jwt.sign({ _id: user._id }, "123456", { expiresIn: '1h' });
+
+        // Trả về dữ liệu theo định dạng auth: {token, user: {}}
+        res.json({
+            token,
+            user: user
+        });
     } catch (error) {
-        res.status(400).json({message:"Không thể sửa"});
+        res.status(400).json({ message: "Không thể sửa" });
+    }
+}
+
+export const changePassword = async (req, res) => {
+    try {
+        const { oldPassword, password, _id } = req.body
+        console.log(oldPassword, password, req.body);
+
+        const user = await User.findOne({ _id: _id }).exec();
+        console.log(user);
+
+        if (!user.authenticate(oldPassword)) {
+            return res.status(400).json({
+                message: "Mật khẩu không đúng"
+            })
+        }
+        // Mã hóa mật khẩu mới
+        const encryptedPassword = user.encryPassword(password);
+
+        // Cập nhật user với mật khẩu đã mã hóa
+        const newUser = await User.findOneAndUpdate(
+            { _id: _id },
+            { ...req.body, password: encryptedPassword },
+            { new: true }
+        );
+        
+        const token = jwt.sign({ _id: newUser._id }, "123456", { expiresIn: '1h' })
+        res.json({
+            token,
+            user: {
+                _id: newUser._id,
+                email: newUser.email,
+                username: newUser.name,
+                image: newUser.image,
+                role: newUser.role,
+                status: newUser.status,
+                contact: newUser.contact,
+            }
+        })
+    } catch (error) {
+        res.status(400).json({ message: "Không thể sửa" });
     }
 }

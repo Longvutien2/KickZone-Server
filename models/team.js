@@ -32,7 +32,26 @@ const teamSchema = new mongoose.Schema({
         type: ObjectId,
         ref: "User",
         required: true,
-    }
+    },
+    members: [{
+        user: {
+            type: ObjectId,
+            ref: "User"
+        },
+        position: {
+            type: String
+        },
+        age: {
+            type: Number
+        },
+        jerseyNumber: {
+            type: Number
+        },
+        joinDate: {
+            type: Date,
+            default: Date.now
+        }
+    }]
 }, { timestamps: true });
 
 // Export the model

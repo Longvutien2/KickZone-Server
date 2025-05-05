@@ -4,8 +4,6 @@ import {createHmac} from 'crypto'
 const userSchema = new mongoose.Schema({
     name:{
         type: String,
-        trim:true,
-        lowercase: true
     },
     email:{
         type:String,
@@ -25,6 +23,12 @@ const userSchema = new mongoose.Schema({
     role: {
         type: Number,
         default: 0
+    },
+    contact: {
+        type: String
+    },
+    image:{
+        type: String
     }
 }, {timestamps: true})
 userSchema.methods = {

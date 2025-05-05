@@ -16,7 +16,7 @@ teamRouter.get("/", async (req, res) => {
 // 2. Lấy đội bóng theo id
 teamRouter.get("/:id", async (req, res) => {
     try {
-        const team = await Team.findById(req.params.id);
+        const team = await Team.findById(req.params.id).populate("user members.user");
         res.status(200).json(team);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -25,8 +25,12 @@ teamRouter.get("/:id", async (req, res) => {
 
 teamRouter.get("/byUser/:userId", async (req, res) => {
     try {
-        const team = await Team.find({ user: req.params.userId }).populate('user');
-        res.status(200).json(team);
+        // Tìm các team mà user là thành viên (có trong members.user)
+        const teams = await Team.find({ 
+            "members.user": req.params.userId 
+        }).populate('user').populate('members.user');
+        
+        res.status(200).json(teams);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

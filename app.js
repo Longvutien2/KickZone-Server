@@ -11,8 +11,10 @@ import notificationRouter from "./routes/notification.js";
 import teamRouter from "./routes/team.js";
 import matchRouter from "./routes/match.js";
 import home from "./routes/home.js";
+import order from "./routes/order.js";
+import dotenv from 'dotenv';
 
-require('dotenv').config();
+dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json()); // Để đọc dữ liệu JSON từ request
@@ -26,6 +28,8 @@ app.use("/api/booking", bookingRouter);
 app.use("/api/notification", notificationRouter);
 app.use("/api/team", teamRouter);
 app.use("/api/match", matchRouter);
+app.use("/api/payment", order);
+// app.use('/order', order);
 
 app.use("/home", home);
 
@@ -38,4 +42,4 @@ mongoose.connect("mongodb+srv://longvutien:giongid@cluster0.e5gby.mongodb.net/?r
   .catch(err => console.error("❌ Lỗi kết nối MongoDB:", err));
 
 // Khởi động server
-app.listen(8000, () => console.log(`Server is running on port`)); 
+app.listen(8000, () => console.log(`Server is running on port 8000`));

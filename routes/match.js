@@ -23,6 +23,16 @@ matchRouter.get("/:id", async (req, res) => {
     }
 });
 
+matchRouter.get("/footballField/:id", async (req, res) => {
+    try {
+        const match = await Match.find({ footballField: req.params.id }).populate("club_A club_B user footballField");
+        res.status(200).json(match);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+
 // 3. Lấy trận đấu theo userId
 matchRouter.get("/byUser/:userId", async (req, res) => {
     try {

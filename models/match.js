@@ -22,13 +22,15 @@ const matchSchema = new Schema(
             ref: "FootballField",
             required: true,
         },
+        bookingId: {
+            type: ObjectId,
+            ref: "Booking",
+        },
         date: {
             type: Date,
-            required: true,
         },
         time: {
             type: String,
-            required: true,
         },
         contact: {
             type: String,
@@ -39,7 +41,6 @@ const matchSchema = new Schema(
         },
         duration: {
             type: String,
-            required: true,
         },
         description: {
             type: String,

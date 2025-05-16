@@ -47,7 +47,7 @@ notificationRouter.get("/:userId/:role", async (req, res) => {
             return res.status(400).json({ error: "Missing userId or role" });
         }
 
-        const data = await Notification.find({ targetUser: userId, actor: role }).populate("bookingId footballfield");
+        const data = await Notification.find({ targetUser: userId, actor: role }).populate("bookingId footballfield club_A club_B");
         // const football = await footballField.findOne({ userId: userId });
         
         // if (!football || !data) {

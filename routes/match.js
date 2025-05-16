@@ -6,7 +6,7 @@ const matchRouter = express.Router();
 // 1. Lấy tất cả trận đấu
 matchRouter.get("/", async (req, res) => {
     try {
-        const matches = await Match.find().populate("club_A club_B user footballField");
+        const matches = await Match.find().populate("club_A club_B user footballField bookingId");
         res.status(200).json(matches);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -16,7 +16,7 @@ matchRouter.get("/", async (req, res) => {
 // 2. Lấy trận đấu theo ID
 matchRouter.get("/:id", async (req, res) => {
     try {
-        const match = await Match.findById(req.params.id).populate("club_A club_B user footballField");
+        const match = await Match.findById(req.params.id).populate("club_A club_B user footballField bookingId");
         res.status(200).json(match);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -25,7 +25,7 @@ matchRouter.get("/:id", async (req, res) => {
 
 matchRouter.get("/footballField/:id", async (req, res) => {
     try {
-        const match = await Match.find({ footballField: req.params.id }).populate("club_A club_B user footballField");
+        const match = await Match.find({ footballField: req.params.id }).populate("club_A club_B user footballField bookingId");
         res.status(200).json(match);
     } catch (error) {
         res.status(500).json({ message: error.message });

@@ -11,6 +11,7 @@ const ActorType = {
 
 const NotificationType = {
     FIELD_BOOKED: 'field_booked',           // Đặt sân thành công
+    FIELD_BOOKING_FAILED: 'field_booking_failed',  // Đặt sân thất bại
     FIELD_CREATED: 'field_created',         // Tạo sân bóng thành công
     OPPONENT_FOUND: 'opponent_found',       // Tìm đối thủ thành công
     POSTED_OPPONENT: 'posted_opponent',     // Đăng bài tìm đối thành công
@@ -51,6 +52,14 @@ const notificationSchema = new Schema({
         type: ObjectId,
         ref: 'FootballField',
         required: false,
+    },
+    club_A: {
+        type: ObjectId,
+        ref: 'Team',
+    },
+    club_B: {
+        type: ObjectId,
+        ref: 'Team',
     },
     read: {
         type: Boolean,

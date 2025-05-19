@@ -12,6 +12,7 @@ import teamRouter from "./routes/team.js";
 import matchRouter from "./routes/match.js";
 import home from "./routes/home.js";
 import order from "./routes/order.js";
+import paymentSepay from "./routes/payment.js";
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -28,7 +29,7 @@ app.use("/api/booking", bookingRouter);
 app.use("/api/notification", notificationRouter);
 app.use("/api/team", teamRouter);
 app.use("/api/match", matchRouter);
-app.use("/api/payment", order);
+app.use("/api/paymentSepay", paymentSepay);
 // app.use('/order', order);
 
 app.use("/home", home);

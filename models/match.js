@@ -26,6 +26,10 @@ const matchSchema = new Schema(
             type: ObjectId,
             ref: "Booking",
         },
+        orderId: {
+            type: ObjectId,
+            ref: "PaymentOrder",
+        },
         date: {
             type: Date,
         },

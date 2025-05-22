@@ -81,7 +81,7 @@ paymentSepay.post("/", async (req, res) => {
             const order = await PaymentOrder.findOne({ content: match });
 
             if (order) {
-                    console.log("đã tháy order", order);
+                console.log("đã tháy order", order);
                 const orderUpdate = await PaymentOrder.findOneAndUpdate(
                     { sepayId: order.sepayId },
                     {
@@ -91,7 +91,7 @@ paymentSepay.post("/", async (req, res) => {
                     { new: true }
                 );
                 console.log("orderUpdate", orderUpdate);
-                
+
                 return res.status(200).json({ success: true, order: orderUpdate });
                 ;
             }
@@ -217,6 +217,15 @@ paymentSepay.get("/orders/:orderId", async (req, res) => {
     } catch (error) {
         console.error("Error getting order details:", error);
         res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+paymentSepay.get("/userId/:id", async (req, res) => {
+    try {
+        const orders = await PaymentOrder.find({ userId: req.params.id });
+        res.status(200).json(orders);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 });
 

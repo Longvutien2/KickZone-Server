@@ -24,7 +24,7 @@ notificationRouter.post("/", async (req, res) => {
 
 notificationRouter.get("/", async (req, res) => {
     try {
-        const notification = await Notification.find().populate("bookingId footballfield"); // Lấy tất cả các booking
+        const notification = await Notification.find().populate("bookingId orderId footballfield"); // Lấy tất cả các booking
         res.status(200).json(notification); // Trả về danh sách tất cả các booking
     } catch (error) {
         res.status(500).json({ message: error.message }); // Nếu có lỗi, trả về thông báo lỗi
@@ -33,7 +33,7 @@ notificationRouter.get("/", async (req, res) => {
 
 notificationRouter.get("/detail/:id", async (req, res) => {
     try {
-        const notification = await Notification.findOne({ _id: req.params.id }).populate("bookingId footballfield"); // Lấy tất cả các booking
+        const notification = await Notification.findOne({ _id: req.params.id }).populate("bookingId orderId footballfield"); // Lấy tất cả các booking
         res.status(200).json(notification); // Trả về danh sách tất cả các booking
     } catch (error) {
         res.status(500).json({ message: error.message }); // Nếu có lỗi, trả về thông báo lỗi
@@ -47,7 +47,7 @@ notificationRouter.get("/:userId/:role", async (req, res) => {
             return res.status(400).json({ error: "Missing userId or role" });
         }
 
-        const data = await Notification.find({ targetUser: userId, actor: role }).populate("bookingId footballfield club_A club_B");
+        const data = await Notification.find({ targetUser: userId, actor: role }).populate("bookingId orderId footballfield club_A club_B");
         // const football = await footballField.findOne({ userId: userId });
         
         // if (!football || !data) {

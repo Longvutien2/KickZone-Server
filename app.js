@@ -14,6 +14,7 @@ import home from "./routes/home.js";
 import order from "./routes/order.js";
 import paymentSepay from "./routes/payment.js";
 import dotenv from 'dotenv';
+import path from 'path';
 
 dotenv.config();
 const app = express();

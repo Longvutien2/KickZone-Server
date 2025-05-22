@@ -43,6 +43,10 @@ const notificationSchema = new Schema({
         type: ObjectId,
         ref: 'Booking',
     },
+    orderId: {
+        type: ObjectId,
+        ref: 'PaymentOrder',
+    },
     targetUser: {
         type: ObjectId,
         ref: 'User', // Nếu cần, bạn có thể liên kết với model User

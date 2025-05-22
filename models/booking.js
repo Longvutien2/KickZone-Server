@@ -8,7 +8,7 @@ const bookingSchema = new mongoose.Schema(
         address: { type: String, required: true },
         field:
         {
-            type: String, 
+            type: String,
         },
         footballField: {
             type: ObjectId,
@@ -24,7 +24,7 @@ const bookingSchema = new mongoose.Schema(
         username: { type: String, required: true },
         email: { type: String, required: true },
         phoneNumber: { type: String, required: true },
-        status: { type: String, enum: ["Chờ xác nhận", "Đã xác nhận", "Đã huỷ"], default: "Chờ xác nhận" },
+        status: { type: String },
     },
     { timestamps: true }
 );

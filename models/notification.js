@@ -25,16 +25,16 @@ const notificationSchema = new Schema({
     actor: {
         type: String,
         enum: Object.values(ActorType),
-        required: true,
+        // required: true,
     },
     notificationType: {
         type: String,
         enum: Object.values(NotificationType),
-        required: true,
+        // required: true,
     },
     title: {
         type: String,
-        required: true,
+        // required: true,
     },
     content: {
         type: String,
@@ -50,12 +50,16 @@ const notificationSchema = new Schema({
     targetUser: {
         type: ObjectId,
         ref: 'User', // Nếu cần, bạn có thể liên kết với model User
-        required: false,
+        // required: false,
     },
     footballfield: {
         type: ObjectId,
         ref: 'FootballField',
-        required: false,
+        // required: false,
+    },
+    match: {
+        type: ObjectId,
+        ref: 'Match',
     },
     club_A: {
         type: ObjectId,

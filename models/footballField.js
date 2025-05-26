@@ -13,7 +13,7 @@ const footballFieldSchema = new mongoose.Schema(
             detail: { type: String }
         },
         phone: { type: String, required: true },
-        desc: { type: String },
+        description: { type: String },
         userId: {
             type: ObjectId,
             ref: "User"

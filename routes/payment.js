@@ -239,4 +239,71 @@ paymentSepay.get("/listorders", async (req, res) => {
     }
 });
 
+// API để xóa các orders pending quá 10 phút
+paymentSepay.delete("/cleanup-pending-orders", async (req, res) => {
+    try {
+        // Tính thời gian 10 phút trước
+        const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
+
+        // Xóa các orders có paymentStatus = "pending" và được tạo trước 10 phút
+        const result = await PaymentOrder.deleteMany({
+            paymentStatus: "pending",
+            createdAt: { $lt: tenMinutesAgo }
+        });
+
+        console.log(`Đã xóa ${result.deletedCount} orders pending cũ`);
+
+        res.status(200).json({
+            success: true,
+            message: `Đã xóa ${result.deletedCount} orders pending cũ`,
+            deletedCount: result.deletedCount
+        });
+    } catch (error) {
+        console.error("Lỗi khi xóa orders pending cũ:", error);
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
+
+// API để cập nhật thông tin order pending (thay vì tạo mới)
+paymentSepay.put("/update-pending-order/:orderId", async (req, res) => {
+    try {
+        const { orderId } = req.params;
+        const updateData = req.body;
+
+        // Tìm và cập nhật order pending
+        const updatedOrder = await PaymentOrder.findOneAndUpdate(
+            {
+                _id: orderId,
+                paymentStatus: "pending"
+            },
+            {
+                ...updateData,
+                content: convertContentToSepayFormat(updateData.content || "")
+            },
+            {
+                new: true // Trả về document sau khi update
+            }
+        );
+
+        if (!updatedOrder) {
+            return res.status(404).json({
+                success: false,
+                message: "Không tìm thấy order pending để cập nhật"
+            });
+        }
+
+        console.log("Đã cập nhật order pending:", updatedOrder);
+        res.status(200).json(updatedOrder);
+    } catch (error) {
+        console.error("Lỗi khi cập nhật order pending:", error);
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
+
 export default paymentSepay;

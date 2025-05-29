@@ -4,9 +4,10 @@ import { ObjectId } from "mongodb";
 const sanBongSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    people: { type: Number, required: true }, // Số người tối đa
-    start_time: { type: String, required: true }, // Giờ mở cửa
-    end_time: { type: String, required: true }, // Giờ đóng cửa,
+    people: { type: String, required: true }, // Số người tối đa
+    // start_time: { type: String, required: true }, // Giờ mở cửa
+    // end_time: { type: String, required: true }, // Giờ đóng cửa,
+    surface: { type: String }, // loại mặt sân,
     foolballFieldId: {
       type: ObjectId,
       ref: "FootballField"

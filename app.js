@@ -22,7 +22,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new SocketIOServer(server, {
   cors: {
-    origin: "http://localhost:3000" || "*",
+    origin: process.env.CLIENT_URL || "*",
     methods: ["GET", "POST"],
     // allowedHeaders: ["my-custom-header"],
     // credentials: true

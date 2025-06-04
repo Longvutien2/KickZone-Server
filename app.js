@@ -29,6 +29,12 @@ const io = new SocketIOServer(server, {
   }
 });
 
+const webpush = require('web-push');
+
+// VAPID keys should be generated only once.
+const vapidKeys = webpush.generateVAPIDKeys();
+console.log("vapidKeys",vapidKeys);
+
 // Tạo global.io để có thể truy cập từ bất kỳ file nào
 global.io = io;
 

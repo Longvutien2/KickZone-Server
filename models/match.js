@@ -22,10 +22,6 @@ const matchSchema = new Schema(
             ref: "FootballField",
             required: true,
         },
-        bookingId: {
-            type: ObjectId,
-            ref: "Booking",
-        },
         orderId: {
             type: ObjectId,
             ref: "PaymentOrder",

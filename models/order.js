@@ -9,10 +9,6 @@ const PaymentOrder = new mongoose.Schema({
     type: ObjectId,
     ref: "User",
   },
-  bookingId: {
-    type: ObjectId,
-    ref: "Booking",
-  },
   fieldName: {
     type: String,
   },

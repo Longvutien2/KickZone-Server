@@ -5,8 +5,6 @@ const sanBongSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     people: { type: String, required: true }, // Số người tối đa
-    // start_time: { type: String, required: true }, // Giờ mở cửa
-    // end_time: { type: String, required: true }, // Giờ đóng cửa,
     surface: { type: String }, // loại mặt sân,
     foolballFieldId: {
       type: ObjectId,

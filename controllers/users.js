@@ -29,7 +29,6 @@ export const signIn = async (req, res) => {
     try {
         const user = await User.findOne({ email }).exec();
         if (!user) {
-            console.log("Lỗi: User không tồn tại");
             return res.status(400).json({ message: "User không tồn tại" });
 
         }
@@ -63,7 +62,7 @@ export const userById = async (req, res, next, id) => {
         req.profile.password = undefined;
         next();
     } catch (error) {
-        console.log(error);
+        res.status(500).json({ message: error.message });
     }
 }
 
@@ -72,7 +71,7 @@ export const getListUser = async (req, res) => {
         const users = await User.find();
         res.status(200).json(users);
     } catch (error) {
-        res.status(500).json({ message: error.message }); // Nếu có lỗi, trả về thông báo lỗi
+        res.status(500).json({ message: error.message });
     }
 }
 
@@ -96,10 +95,7 @@ export const updateUser = async (req, res) => {
 export const changePassword = async (req, res) => {
     try {
         const { oldPassword, password, _id } = req.body
-        console.log(oldPassword, password, req.body);
-
         const user = await User.findOne({ _id: _id }).exec();
-        console.log(user);
 
         if (!user.authenticate(oldPassword)) {
             return res.status(400).json({
@@ -115,7 +111,7 @@ export const changePassword = async (req, res) => {
             { ...req.body, password: encryptedPassword },
             { new: true }
         );
-        
+
         const token = jwt.sign({ _id: newUser._id }, "123456", { expiresIn: '1h' })
         res.json({
             token,

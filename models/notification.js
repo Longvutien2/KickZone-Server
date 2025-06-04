@@ -39,10 +39,6 @@ const notificationSchema = new Schema({
     content: {
         type: String,
     },
-    bookingId: {
-        type: ObjectId,
-        ref: 'Booking',
-    },
     orderId: {
         type: ObjectId,
         ref: 'PaymentOrder',

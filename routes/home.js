@@ -1,15 +1,9 @@
-// const express = require('express');
 import express from "express";
-const home  = express.Router();
+import { getHomePage } from "../controllers/home.js";
 
-home.get('/', (request, response) => {
-    response.send(`
-        <h1>Trang chủ</h1>
-        <p>Content trang chủ <p/>
-        <img src="https://picsum.photos/2000/400">
-    `)
-})
+const home = express.Router();
 
-// module.exports = route;
+home.get('/', getHomePage);
+
 export default home;
 

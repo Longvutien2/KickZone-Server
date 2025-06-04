@@ -4,7 +4,7 @@
 
 
 import express from 'express';
-import request from 'request';
+import axios from 'axios';
 import moment from 'moment';
 
 let router = express.Router();
@@ -249,14 +249,17 @@ router.post('/querydr', function (req, res, next) {
         'vnp_SecureHash': vnp_SecureHash
     };
     // /merchant_webapi/api/transaction
-    request({
-        url: vnp_Api,
-        method: "POST",
-        json: true,   
-        body: dataObj
-            }, function (error, response, body){
-                console.log(response);
-            });
+    axios.post(vnp_Api, dataObj, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        console.log(response.data);
+    })
+    .catch(error => {
+        console.error('Error in querydr:', error);
+    });
 
 });
 
@@ -316,14 +319,17 @@ router.post('/refund', function (req, res, next) {
         'vnp_SecureHash': vnp_SecureHash
     };
     
-    request({
-        url: vnp_Api,
-        method: "POST",
-        json: true,   
-        body: dataObj
-            }, function (error, response, body){
-                console.log(response);
-            });
+    axios.post(vnp_Api, dataObj, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        console.log(response.data);
+    })
+    .catch(error => {
+        console.error('Error in refund:', error);
+    });
     
 });
 

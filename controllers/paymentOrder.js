@@ -37,7 +37,7 @@ export const createOrder = async (req, res) => {
         ...req.body,
         content: convertContentToSepayFormat(req.body.content)
     };
-    
+
     try {
         const newOrder = new PaymentOrder(order);
         const savedOrder = await newOrder.save();
@@ -54,7 +54,7 @@ export const createOrder = async (req, res) => {
 // Xử lý webhook từ SePay
 export const handleWebhook = async (req, res) => {
     try {
-        const regex = /DH(.*?)(?=\s+FT|$)/i;
+        const regex = /DH(.*?\d{10})(?=\s+FT|$)/i;
         let match = req.body.content.match(regex);
 
         if (match && match[1]) {

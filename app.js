@@ -19,8 +19,9 @@ const app = express();
 const server = http.createServer(app);
 const io = new SocketIOServer(server, {
   cors: {
-    origin: process.env.CLIENT_URL || "*",
+    origin: "*", // Tạm thời allow all origins
     methods: ["GET", "POST"],
+    credentials: false
   }
 });
 
@@ -56,7 +57,13 @@ io.on('connection', (socket) => {
     console.log('User disconnected:', socket.id);
   });
 });
-app.use(cors());
+// 🚀 CORS config cho production
+app.use(cors({
+  origin: "*", // Tạm thời allow all origins
+  credentials: false,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json()); // Để đọc dữ liệu JSON từ request
 
 // router

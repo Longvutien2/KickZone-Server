@@ -19,51 +19,14 @@ const app = express();
 const server = http.createServer(app);
 const io = new SocketIOServer(server, {
   cors: {
-    origin: "*", // Tạm thời allow all origins
+    origin: process.env.CLIENT_URL || "*",
     methods: ["GET", "POST"],
-    credentials: false
   }
 });
 
 global.io = io;
-io.on('connection', (socket) => {
-  console.log('User connected:', socket.id);
-  
-  // // Xử lý sự kiện khi client gửi tin nhắn
-  // socket.on('chatMessage', (message) => {
-  //   console.log('Received message:', message);
-  //   // Gửi tin nhắn đến tất cả client
-  //   io.emit('chatMessage', message);
-  // });
-  
-  // // Xử lý sự kiện khi client tham gia phòng
-  // socket.on('joinRoom', (roomId) => {
-  //   socket.join(roomId);
-  //   console.log(`User ${socket.id} joined room: ${roomId}`);
-  //   // Thông báo cho các client khác trong phòng
-  //   socket.to(roomId).emit('userJoined', { userId: socket.id });
-  // });
-  
-  // // Xử lý sự kiện khi client rời phòng
-  // socket.on('leaveRoom', (roomId) => {
-  //   socket.leave(roomId);
-  //   console.log(`User ${socket.id} left room: ${roomId}`);
-  //   // Thông báo cho các client khác trong phòng
-  //   socket.to(roomId).emit('userLeft', { userId: socket.id });
-  // });
-  
-  // Xử lý sự kiện khi client ngắt kết nối
-  socket.on('disconnect', () => {
-    console.log('User disconnected:', socket.id);
-  });
-});
-// 🚀 CORS config cho production
-app.use(cors({
-  origin: "*", // Tạm thời allow all origins
-  credentials: false,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+
+app.use(cors());
 app.use(express.json()); // Để đọc dữ liệu JSON từ request
 
 // router

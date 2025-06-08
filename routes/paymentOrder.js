@@ -9,7 +9,9 @@ import {
     getOrdersByUserId,
     getAllOrders,
     cleanupPendingOrders,
-    updatePendingOrder
+    updatePendingOrder,
+    checkOrderExist,
+    checkUserOrderExist,
 } from "../controllers/paymentOrder.js";
 
 const paymentSepay = express.Router();
@@ -25,6 +27,8 @@ paymentSepay.post("/", handleWebhook);
 
 // Kiểm tra trạng thái thanh toán
 paymentSepay.get("/check-payment/:orderId", checkPaymentStatus);
+paymentSepay.get("/check-exist", checkOrderExist);
+paymentSepay.get("/check-user-exist", checkUserOrderExist);
 
 paymentSepay.get("/orders", getOrders);
 paymentSepay.get("/orders/:orderId", getOrderDetails);

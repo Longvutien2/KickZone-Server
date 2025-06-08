@@ -159,11 +159,83 @@ export const getOrderDetails = async (req, res) => {
     }
 };
 
-// Lấy orders theo user ID
+// Lấy orders theo user ID với pagination và tối ưu
 export const getOrdersByUserId = async (req, res) => {
     try {
-        const orders = await PaymentOrder.find({ userId: req.params.id });
-        res.status(200).json(orders);
+        const { page = 1, limit = 50, status } = req.query;
+        const userId = req.params.id;
+
+        const query = { userId };
+
+        // Filter theo status nếu có
+        if (status) {
+            query.paymentStatus = status;
+        }
+
+        const skip = (parseInt(page) - 1) * parseInt(limit);
+        const total = await PaymentOrder.countDocuments(query);
+
+        const orders = await PaymentOrder.find(query)
+            .sort({ createdAt: -1 }) // Sắp xếp mới nhất trước
+            .skip(skip)
+            .limit(parseInt(limit))
+            .lean(); // Sử dụng lean() để tăng performance
+
+        res.status(200).json({
+            success: true,
+            total,
+            page: parseInt(page),
+            limit: parseInt(limit),
+            totalPages: Math.ceil(total / parseInt(limit)),
+            orders
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+export const checkOrderExist = async (req, res) => {
+    try {
+        const { field, date, time } = req.query;
+
+        const order = await PaymentOrder.findOne({
+            fieldName: field,
+            timeStart: time,
+            date: date,
+            paymentStatus: "success"
+        });
+
+        if (order) {
+            return res.status(200).json({ success: true, message: "Field is booked" });
+        }
+        return res.status(200).json({ success: false, message: "Field is available" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const checkUserOrderExist = async (req, res) => {
+    try {
+        const { field, date, time, userId } = req.query;
+
+        // Tìm đơn hàng đã thanh toán thành công NHƯNG KHÔNG PHẢI của user hiện tại
+        const query = {
+            fieldName: field,
+            timeStart: time,
+            date: date,
+            paymentStatus: "success"
+        };
+
+        // Nếu có userId, loại trừ user này ra khỏi kết quả
+        if (userId) {
+            query.userId = { $ne: userId }; // $ne = not equal
+        }
+
+        const order = await PaymentOrder.findOne(query);
+
+        if (order) {
+            return res.status(200).json({ success: true, message: "Field is booked by another user" });
+        }
+        return res.status(200).json({ success: false, message: "Field is available" });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

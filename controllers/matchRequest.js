@@ -27,7 +27,7 @@ export const getMatchRequestById = async (req, res) => {
 // Lấy yêu cầu theo match ID
 export const getMatchRequestsByMatchId = async (req, res) => {
     try {
-        const requests = await MatchRequest.findOne({ match: req.params.matchId, status: 'pending' }).populate("user match club_B targetUser");
+        const requests = await MatchRequest.find({ match: req.params.matchId, status: 'pending' }).populate("user match club_B targetUser");
         res.status(200).json(requests);
     } catch (error) {
         console.error("Error in getMatchRequestsByMatchId:", error);
@@ -68,8 +68,9 @@ export const createMatchRequest = async (req, res) => {
         // Tạo yêu cầu mới
         const newRequest = new MatchRequest(req.body);
         const savedRequest = await newRequest.save();
-
-        res.status(201).json(savedRequest);
+        const populatedRequest = await MatchRequest.findById(savedRequest._id).populate("user match club_B targetUser");
+        
+        res.status(201).json(populatedRequest);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -83,7 +84,7 @@ export const updateMatchRequestStatus = async (req, res) => {
             req.params.id,
             { status },
             { new: true }
-        );
+        ).populate("user match club_B targetUser");
 
         res.status(200).json(updatedField);
     } catch (error) {

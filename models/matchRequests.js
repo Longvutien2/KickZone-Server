@@ -22,7 +22,7 @@ const MatchRequest = new mongoose.Schema({
         ref: "User",
         required: true,
     },
-    message: {
+    description: {
         type: String,
     },
     status:{

@@ -45,7 +45,8 @@ export const createMatch = async (req, res) => {
     try {
         const newMatch = new Match(req.body);
         const savedMatch = await newMatch.save();
-        res.status(201).json(savedMatch);
+        const populatedMatch = await Match.findById(savedMatch._id).populate("club_A club_B user footballField orderId");
+        res.status(201).json(populatedMatch);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -58,7 +59,7 @@ export const updateMatch = async (req, res) => {
             req.params.id,
             req.body,
             { new: true }
-        );
+        ).populate("club_A club_B user footballField orderId");
         res.status(200).json(updatedMatch);
     } catch (error) {
         res.status(500).json({ message: error.message });

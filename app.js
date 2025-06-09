@@ -8,6 +8,7 @@ import footballField from "./routes/footballField.js";
 import notificationRouter from "./routes/notification.js";
 import teamRouter from "./routes/team.js";
 import matchRouter from "./routes/match.js";
+import matchRequestRouter from "./routes/matchRequest.js";
 import home from "./routes/home.js";
 import dotenv from 'dotenv';
 import http from 'http';
@@ -37,6 +38,7 @@ app.use("/api/footballField", footballField);
 app.use("/api/notification", notificationRouter);
 app.use("/api/team", teamRouter);
 app.use("/api/match", matchRouter);
+app.use("/api/matchRequest", matchRequestRouter);
 app.use("/api/paymentSepay", paymentSepay);
 app.use("/home", home);
 

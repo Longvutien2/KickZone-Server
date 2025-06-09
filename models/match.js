@@ -34,7 +34,6 @@ const matchSchema = new Schema(
         },
         contact: {
             type: String,
-            required: true,
         },
         contactClubB: {
             type: String,

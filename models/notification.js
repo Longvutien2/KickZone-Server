@@ -18,6 +18,11 @@ const NotificationType = {
     NEW_ORDER: 'new_order',                 // Đơn hàng mới
     FIELD_REGISTRATION_REQUEST: 'field_registration_request', // Yêu cầu đăng ký sân bóng
     USER_FEEDBACK: 'user_feedback',         // Phản hồi từ người dùng
+    
+    MATCH_REQUEST: 'match_request',         // Yêu cầu tham gia trận đấu
+    REQUEST_SENT: 'request_sent',          // Đã gửi yêu cầu
+    REQUEST_ACCEPTED: 'request_accepted',  // Yêu cầu được chấp nhận
+    REQUEST_REJECTED: 'request_rejected',  // Yêu cầu bị từ chối
 };
 
 // Schema thông báo

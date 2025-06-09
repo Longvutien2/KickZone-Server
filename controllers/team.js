@@ -24,10 +24,7 @@ export const getTeamById = async (req, res) => {
 export const getTeamsByUserId = async (req, res) => {
     try {
         // Tìm các team mà user là thành viên (có trong members.user)
-        const teams = await Team.find({ 
-            "members.user": req.params.userId 
-        }).populate('user').populate('members.user');
-        
+        const teams = await Team.find({ "user": req.params.userId }).populate('user');
         res.status(200).json(teams);
     } catch (error) {
         res.status(500).json({ message: error.message });

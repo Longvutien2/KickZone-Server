@@ -162,33 +162,42 @@ export const getOrderDetails = async (req, res) => {
 // Lấy orders theo user ID với pagination và tối ưu
 export const getOrdersByUserId = async (req, res) => {
     try {
-        const { page = 1, limit = 50, status } = req.query;
-        const userId = req.params.id;
+        const orders = await PaymentOrder.find({ userId: req.params.id });
 
-        const query = { userId };
+        // Sắp xếp theo date và timeStart
+        const sortedOrders = orders.sort((a, b) => {
+            // Parse date từ format "DD-MM-YYYY"
+            const parseDate = (dateStr) => {
+                if (!dateStr) return new Date(0);
+                const [day, month, year] = dateStr.split('-');
+                return new Date(year, month - 1, day);
+            };
 
-        // Filter theo status nếu có
-        if (status) {
-            query.paymentStatus = status;
-        }
+            const dateA = parseDate(a.date);
+            const dateB = parseDate(b.date);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
 
-        const skip = (parseInt(page) - 1) * parseInt(limit);
-        const total = await PaymentOrder.countDocuments(query);
+            // Ưu tiên ngày hiện tại trước
+            const isDateAToday = dateA.toDateString() === today.toDateString();
+            const isDateBToday = dateB.toDateString() === today.toDateString();
 
-        const orders = await PaymentOrder.find(query)
-            .sort({ createdAt: -1 }) // Sắp xếp mới nhất trước
-            .skip(skip)
-            .limit(parseInt(limit))
-            .lean(); // Sử dụng lean() để tăng performance
+            if (isDateAToday && !isDateBToday) return -1;
+            if (!isDateAToday && isDateBToday) return 1;
 
-        res.status(200).json({
-            success: true,
-            total,
-            page: parseInt(page),
-            limit: parseInt(limit),
-            totalPages: Math.ceil(total / parseInt(limit)),
-            orders
+            // Nếu cùng loại ngày, sắp xếp theo date
+            if (dateA.getTime() !== dateB.getTime()) {
+                return dateA.getTime() - dateB.getTime();
+            }
+
+            // Nếu cùng ngày, sắp xếp theo timeStart (nhỏ nhất tới lớn nhất)
+            const timeA = a.timeStart || '';
+            const timeB = b.timeStart || '';
+            return timeA.localeCompare(timeB);
         });
+
+
+        res.status(200).json(sortedOrders);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

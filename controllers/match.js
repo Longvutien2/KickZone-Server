@@ -4,7 +4,33 @@ import Match from "../models/match.js";
 export const getAllMatches = async (req, res) => {
     try {
         const matches = await Match.find().populate("club_A club_B user footballField orderId");
-        res.status(200).json(matches);
+
+        // Sắp xếp theo orderId.date và orderId.timeStart
+        const sortedMatches = matches.sort((a, b) => {
+            const dateA = new Date(a.orderId?.date);
+            const dateB = new Date(b.orderId?.date);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            // Ưu tiên ngày hiện tại trước
+            const isDateAToday = dateA.toDateString() === today.toDateString();
+            const isDateBToday = dateB.toDateString() === today.toDateString();
+
+            if (isDateAToday && !isDateBToday) return -1;
+            if (!isDateAToday && isDateBToday) return 1;
+
+            // Nếu cùng loại ngày (cùng hôm nay hoặc cùng tương lai), sắp xếp theo date
+            if (dateA.getTime() !== dateB.getTime()) {
+                return dateA.getTime() - dateB.getTime();
+            }
+
+            // Nếu cùng ngày, sắp xếp theo timeStart (nhỏ nhất tới lớn nhất)
+            const timeA = a.orderId?.timeStart || '';
+            const timeB = b.orderId?.timeStart || '';
+            return timeA.localeCompare(timeB);
+        });
+
+        res.status(200).json(sortedMatches);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

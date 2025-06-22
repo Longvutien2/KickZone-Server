@@ -1,5 +1,12 @@
 import TimeSlot from "../models/timeSlot.js";
 
+// Helper function để convert time string thành số để sort
+const timeToMinutes = (timeString) => {
+    const [start] = timeString.split(' - ');
+    const [hours, minutes] = start.split(':').map(Number);
+    return hours * 60 + minutes;
+};
+
 // Tạo khung giờ mới
 export const createTimeSlot = async (req, res) => {
     try {
@@ -28,7 +35,13 @@ export const updateTimeSlot = async (req, res) => {
 export const getTimeSlotsByFootballFieldId = async (req, res) => {
     try {
         const data = await TimeSlot.find({ footballField: req.params.id }).populate("footballField");
-        res.status(200).json(data);
+
+        // Sort theo time từ sớm đến muộn
+        const sortedData = data.sort((a, b) => {
+            return timeToMinutes(a.time) - timeToMinutes(b.time);
+        });
+
+        res.status(200).json(sortedData);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -38,7 +51,13 @@ export const getTimeSlotsByFootballFieldId = async (req, res) => {
 export const getAllTimeSlots = async (req, res) => {
     try {
         const slots = await TimeSlot.find().populate("fieldId");
-        res.status(200).json(slots);
+
+        // Sort theo time từ sớm đến muộn
+        const sortedSlots = slots.sort((a, b) => {
+            return timeToMinutes(a.time) - timeToMinutes(b.time);
+        });
+
+        res.status(200).json(sortedSlots);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

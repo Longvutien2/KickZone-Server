@@ -27,4 +27,8 @@ const footballFieldSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
+// Thêm indexes
+footballFieldSchema.index({ status: 1 });
+footballFieldSchema.index({ userId: 1 });
+footballFieldSchema.index({ 'address.province': 1, 'address.district': 1 });
 export default mongoose.model("FootballField", footballFieldSchema);

@@ -1,32 +1,61 @@
 import Comment from "../models/comment.js";
 import CommentReply from "../models/commentReply.js";
+import mongoose from "mongoose";
 
-// Lấy tất cả comments của một match với replies
+// ✅ Thay thế bằng Aggregation Pipeline
 export const getCommentsByMatchId = async (req, res) => {
     try {
         const { matchId } = req.params;
         
-        // Lấy comments chính
-        const comments = await Comment.find({ 
-            matchId: matchId, 
-            isDeleted: false 
-        })
-        .populate("userId", "name email image")
-        .sort({ createdAt: -1 })
-        .lean();
-
-        // Lấy replies cho từng comment
-        for (let comment of comments) {
-            const replies = await CommentReply.find({ 
-                commentId: comment._id, 
-                isDeleted: false 
-            })
-            .populate("userId", "name email image")
-            .sort({ createdAt: 1 })
-            .lean();
-            
-            comment.replies = replies;
-        }
+        const comments = await Comment.aggregate([
+            {
+                $match: { 
+                    matchId: new mongoose.Types.ObjectId(matchId), 
+                    isDeleted: false 
+                }
+            },
+            {
+                $lookup: {
+                    from: 'commentreplies',
+                    let: { commentId: '$_id' },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $and: [
+                                        { $eq: ['$commentId', '$$commentId'] },
+                                        { $eq: ['$isDeleted', false] }
+                                    ]
+                                }
+                            }
+                        },
+                        { $sort: { createdAt: 1 } },
+                        {
+                            $lookup: {
+                                from: 'users',
+                                localField: 'userId',
+                                foreignField: '_id',
+                                as: 'userId',
+                                pipeline: [{ $project: { name: 1, email: 1, image: 1 } }]
+                            }
+                        },
+                        { $unwind: '$userId' }
+                    ],
+                    as: 'replies'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'userId',
+                    foreignField: '_id',
+                    as: 'userId',
+                    pipeline: [{ $project: { name: 1, email: 1, image: 1 } }]
+                }
+            },
+            { $unwind: '$userId' },
+            { $sort: { createdAt: -1 } }
+        ]);
 
         res.status(200).json(comments);
     } catch (error) {

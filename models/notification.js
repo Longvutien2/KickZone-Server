@@ -76,6 +76,12 @@ const notificationSchema = new Schema({
     },
 }, { timestamps: true });
 
+// ✅ Thêm indexes TRƯỚC khi tạo model
+notificationSchema.index({ targetUser: 1, actor: 1 });
+notificationSchema.index({ targetUser: 1, read: 1 });
+notificationSchema.index({ createdAt: -1 });
+notificationSchema.index({ actor: 1, createdAt: -1 });
+
 const Notification = mongoose.model('Notification', notificationSchema);
 
 export { Notification, ActorType, NotificationType };

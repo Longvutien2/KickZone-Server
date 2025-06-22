@@ -17,5 +17,10 @@ const timeSlotSchema = new mongoose.Schema({
     
 }, { timestamps: true });
 
+// ✅ Thêm indexes TRƯỚC khi tạo model
+timeSlotSchema.index({ footballField: 1, datetime: 1 });
+timeSlotSchema.index({ fieldId: 1, isBooked: 1 });
+timeSlotSchema.index({ footballField: 1, isBooked: 1 });
+timeSlotSchema.index({ datetime: 1 });
 
 export default mongoose.model("TimeSlot", timeSlotSchema);

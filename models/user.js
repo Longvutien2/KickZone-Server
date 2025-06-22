@@ -59,4 +59,9 @@ userSchema.pre("save", function(next) {
         console.log(error);
     }
 })
-export default mongoose.model('User',userSchema);   
+
+// ✅ Thêm indexes TRƯỚC khi tạo model
+userSchema.index({ email: 1 }, { unique: true });
+userSchema.index({ role: 1, status: 1 });
+
+export default mongoose.model('User',userSchema);

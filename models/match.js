@@ -49,4 +49,12 @@ const matchSchema = new Schema(
     { timestamps: true }
 );
 
+// ✅ Thêm indexes quan trọng cho performance
+matchSchema.index({ user: 1, date: -1 });
+matchSchema.index({ footballField: 1, date: 1 });
+matchSchema.index({ club_A: 1 });
+matchSchema.index({ club_B: 1 });
+matchSchema.index({ date: 1, time: 1 });
+matchSchema.index({ createdAt: -1 });
+
 export default mongoose.model("Match", matchSchema);

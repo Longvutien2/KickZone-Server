@@ -27,4 +27,8 @@ const commentReplySchema = new Schema(
     { timestamps: true }
 );
 
+// ✅ Thêm indexes cho performance
+commentReplySchema.index({ commentId: 1, isDeleted: 1, createdAt: 1 });
+commentReplySchema.index({ userId: 1 });
+
 export default mongoose.model("CommentReply", commentReplySchema);

@@ -29,7 +29,7 @@ const io = new SocketIOServer(server, {
 global.io = io;
 
 app.use(cors());
-app.use(express.json()); // Để đọc dữ liệu JSON từ request
+app.use(express.json());
 
 // router
 app.use("/api", userRouter);

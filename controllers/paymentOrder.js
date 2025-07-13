@@ -1,4 +1,6 @@
 import PaymentOrder from "../models/order.js";
+import FootballField from "../models/footballField.js";
+import { Notification } from '../models/notification.js';
 
 // Hàm chuyển đổi nội dung từ định dạng DB sang định dạng SePay
 function convertContentToSepayFormat(content) {
@@ -92,6 +94,22 @@ export const checkPaymentStatus = async (req, res) => {
         }
 
         if (order.paymentStatus === "success") {
+            if (global.io) {
+                try {
+                    const footballField = await FootballField.findById('67ce9ea74c79326f98b8bf8e');
+                    if (footballField && footballField.userId) {
+                        global.io.emit('newBookingNotification', {
+                            type: 'NEW_BOOKING',
+                            order: order,
+                            targetUserId: footballField.userId,
+                            message: `Sân "${order.fieldName}" đã có người đặt vào lúc ${order.timeStart}, ngày ${order.date}!`
+                        });
+                    }
+                } catch (notificationError) {
+                    console.error('Lỗi khi gửi thông báo cho chủ sân:', notificationError);
+                }
+            }
+
             return res.status(200).json({ success: true, order: order });
         }
 

@@ -26,6 +26,7 @@ const io = new SocketIOServer(server, {
   }
 });
 
+
 global.io = io;
 
 app.use(cors());
